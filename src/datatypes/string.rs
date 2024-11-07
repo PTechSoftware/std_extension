@@ -16,6 +16,8 @@ impl StringManipulate for String {
     /// 
     /// ## Example:
     /// ```
+    /// use std::str::FromStr;
+    /// use std_extension::traits::string_manipulate::StringManipulate;
     /// let data = String::from_str("Hello word, this is Rust, my friend.").unwrap();
     /// let split = &data.split_string(",", 2);
     /// let second = split.get(1).unwrap();
@@ -41,6 +43,8 @@ impl StringManipulate for String {
     /// 
     /// ## Example:
     /// ```
+    /// use std::str::FromStr;
+    /// use std_extension::traits::string_manipulate::StringManipulate;
     /// let mut data = String::from_str("Hello word, this is Rust, my friend.").unwrap();
     /// data.substring_replace(0, 5);
     /// ```
