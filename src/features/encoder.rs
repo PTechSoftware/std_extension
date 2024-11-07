@@ -11,7 +11,14 @@ impl Encoding for String {
     }
     
     fn from_base64(&self) ->String {
-        base64_decode(&self)
+        match base64_decode(&self){
+            Ok(v) =>{
+                String::from_utf8_lossy(&v).into()
+            },
+            Err(_) =>{
+                String::new()
+            }
+        }
     }
 }
 
@@ -20,7 +27,14 @@ impl Encoding for &str {
         base64_encode(self.as_bytes())
     }
     fn from_base64(&self) ->String {
-        base64_decode(&self)
+        match base64_decode(&self){
+            Ok(v) =>{
+                String::from_utf8_lossy(&v).into()
+            },
+            Err(_) =>{
+                String::new()
+            }
+        }
     }
 }
 

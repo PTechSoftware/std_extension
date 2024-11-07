@@ -1,5 +1,3 @@
-use crate::traits::str_manipulate::StrManipulate;
-
 pub trait LineCSVParse {
     fn line_parse(&self, raw_line: &str, output: &mut Vec<String>, delimiter: &str);
 }
