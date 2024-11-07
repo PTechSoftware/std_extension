@@ -4,3 +4,5 @@ pub mod ffi_extensible;
 pub mod csv_extensible;
 #[cfg(feature = "files")]
 pub mod files;
+#[cfg(feature = "encoders")]
+pub mod encoder;
