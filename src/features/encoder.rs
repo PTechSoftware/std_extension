@@ -2,11 +2,16 @@
 
 pub trait Encoding {
     fn to_base64(&self) -> String;
+    fn from_base64(&self) ->String;
 }
 
 impl Encoding for String {
     fn to_base64(&self) -> String {
         base64_encode(self.as_bytes())
+    }
+    
+    fn from_base64(&self) ->String {
+        base64_decode(&self)
     }
 }
 
@@ -14,6 +19,39 @@ impl Encoding for &str {
     fn to_base64(&self) -> String {
         base64_encode(self.as_bytes())
     }
+    fn from_base64(&self) ->String {
+        base64_decode(&self)
+    }
+}
+
+// Helper function for Base64 decoding
+fn base64_decode(base64_str: &str) -> Result<Vec<u8>, &'static str> {
+    const BASE64_TABLE: &[u8; 64] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut decoded = Vec::new();
+    let mut buffer = 0u32;
+    let mut bits_collected = 0;
+
+    for c in base64_str.bytes() {
+        if c == b'=' {
+            break;
+        }
+
+        let index = match BASE64_TABLE.iter().position(|&v| v == c) {
+            Some(i) => i as u8,
+            None => return Err("Invalid Base64 character"),
+        };
+
+        buffer = (buffer << 6) | index as u32;
+        bits_collected += 6;
+
+        if bits_collected >= 8 {
+            bits_collected -= 8;
+            let byte = (buffer >> bits_collected) as u8;
+            decoded.push(byte);
+        }
+    }
+
+    Ok(decoded)
 }
 
 // Helper function for Base64 encoding
