@@ -1,36 +1,8 @@
 use regex::Regex;
-use crate::traits::numbers_manipulate::ParseNumber;
+use crate::{models::{convert::Convert, number::Number}, traits::numbers_manipulate::ParseNumber};
 
-pub enum Number {
-    I8(i8),
-    I16(i16),
-    I32(i32),
-    I64(i64),
-    I128(i128),
-    ISize(isize),
-    U8(u8),
-    U16(u16),
-    U32(u32),
-    U64(u64),
-    U128(u128),
-    F32(f32),
-    F64(f64),
-    USize(usize),
-}
 
-pub struct Convert {
-    entrada: String,
-    salida: Number,
-}
 
-impl Convert {
-    pub fn new(entrada: &str, salida: Number) -> Self {
-        Self {
-            entrada: entrada.to_string(),
-            salida,
-        }
-    }
-}
 impl ParseNumber for Convert {
     fn convert_to(&self) -> std::io::Result<Number> {
         // Detectar el último separador decimal

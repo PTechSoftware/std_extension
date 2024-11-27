@@ -1,6 +1,6 @@
 use std::io;
 
-use crate::datatypes::numbers::Number;
+use crate::models::number::Number;
 /// Trait to easyt cast a numeric value, a expenses of performance.
 pub trait ParseNumber{
     /// # ConvertTo Method
