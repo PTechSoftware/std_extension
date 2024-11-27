@@ -15,3 +15,24 @@ pub enum Number {
     F64(f64),
     USize(usize),
 }
+
+impl Number {
+    pub fn is_float(&self) -> bool{
+        match &self {
+            Number::I8(_) => false,
+            Number::I16(_) => false,
+            Number::I32(_) => false,
+            Number::I64(_) => false,
+            Number::I128(_) => false,
+            Number::ISize(_) => false,
+            Number::U8(_) => false,
+            Number::U16(_) => false,
+            Number::U32(_) => false,
+            Number::U64(_) => false,
+            Number::U128(_) => false,
+            Number::F32(_) => true,
+            Number::F64(_) => true,
+            Number::USize(_) => false,
+        }
+    }
+}

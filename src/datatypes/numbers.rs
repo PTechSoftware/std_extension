@@ -13,7 +13,7 @@ impl ParseNumber for Convert {
             .unwrap_or('.'); // Asumir punto si no hay separador
 
         // Normalizar la entrada con base en el separador detectado
-        let normalized = match decimal_separator {
+        let normalized_a = match decimal_separator {
             ',' => {
                 // Si el separador decimal es `,`, los puntos son separadores de miles y deben eliminarse
                 let re_thousands_separator = Regex::new(r"\.").unwrap();
@@ -26,7 +26,18 @@ impl ParseNumber for Convert {
             }
             _ => self.entrada.clone(),
         };
-
+         // Truncar valores decimales solo si el tipo no es flotante
+        let normalized = if !self.salida.is_float() {
+            if let Some(index) = normalized_a.find('.') {
+                // Si hay un punto decimal, truncar la parte fraccionaria
+                &normalized_a[..index]
+            } else {
+                &normalized_a
+            }
+            .to_string()
+        } else {
+            normalized_a
+        };
         // Validar que el formato sea correcto (un único separador decimal)
         if normalized.matches('.').count() > 1 {
             return Err(std::io::Error::new(
@@ -34,7 +45,6 @@ impl ParseNumber for Convert {
                 "Formato inválido: múltiples separadores decimales",
             ));
         }
-
         // Convertir la cadena normalizada al tipo deseado
         let output = match self.salida {
             Number::I8(_) => Number::I8(normalized.parse::<i8>().unwrap_or(0_i8)),
@@ -90,10 +100,21 @@ mod test {
 
     #[test]
     fn cast_test_3() {
-        let cas = Convert::new("123,456", Number::F32(0_f32));
+        let cas = Convert::new("12,000", Number::I32(0_i32));
         let salida = cas.convert_to().unwrap();
 
-        if let Number::F32(valor) = salida {
+        if let Number::I32(valor) = salida {
+            println!("{}",valor)
+        } else {
+            panic!("La conversión no devolvió un Number::I32");
+        }
+    }
+    #[test]
+    fn cast_test_4() {
+        let cas = Convert::new("12.000", Number::I32(0_i32));
+        let salida = cas.convert_to().unwrap();
+
+        if let Number::I32(valor) = salida {
             println!("{}",valor)
         } else {
             panic!("La conversión no devolvió un Number::I32");
