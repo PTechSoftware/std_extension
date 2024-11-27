@@ -5,7 +5,7 @@ pub struct Convert {
     pub salida: Number,
 }
 
- impl Convert {
+impl Convert {
     pub fn new(entrada: &str, salida: Number) -> Self {
         Self {
             entrada: entrada.to_string(),
